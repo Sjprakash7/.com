@@ -20,9 +20,9 @@ jobs:
 
       - run: npm install
       - run: npm run build
-      - run: cp dist/index.html dist/404.html
+      - run: cp docs/index.html docs/404.html
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./docs
