@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
+import RequestShopForm from "./RequestShopForm.jsx";
 import {
   Search, MapPin, Star, Phone, Clock, ChevronRight, ChevronLeft,
   ShoppingBag, Pill, Smartphone, Shirt, UtensilsCrossed, Cake,
@@ -141,6 +142,7 @@ function isShopOpen(hours) {
 }
 
 export default function ShopNest() {
+  const [activePage, setActivePage] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -148,6 +150,9 @@ export default function ShopNest() {
   const [ratingFilter, setRatingFilter] = useState(false);
   const [openNowFilter, setOpenNowFilter] = useState(false);
   const searchInputRef = useRef(null);
+
+  const openRequestForm = useCallback(() => setActivePage("request"), []);
+  const goHome = useCallback(() => setActivePage("home"), []);
 
   const scrollTo = useCallback((id) => {
     setMenuOpen(false);
@@ -188,6 +193,10 @@ export default function ShopNest() {
   const nextTestimonial = () => setTestimonialIdx((i) => (i + 1) % TESTIMONIALS.length);
   const prevTestimonial = () => setTestimonialIdx((i) => (i - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
 
+  if (activePage === "request") {
+    return <RequestShopForm onBack={goHome} />;
+  }
+
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", color: "#1E293B", background: "#F8FAFC" }} className="w-full min-h-screen">
       {/* Header */}
@@ -223,7 +232,7 @@ export default function ShopNest() {
             </button>
             <button
               type="button"
-              onClick={() => scrollTo("contact")}
+              onClick={openRequestForm}
               className="text-sm font-semibold text-white px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-all"
               style={{ background: "#2563EB" }}
             >
@@ -250,7 +259,7 @@ export default function ShopNest() {
             ))}
             <hr className="border-slate-200" />
             <button type="button" onClick={() => scrollTo("pricing")} className="text-sm font-semibold text-slate-700 text-left">Shop Owner Login</button>
-            <button type="button" onClick={() => scrollTo("contact")} className="text-sm font-semibold text-white px-4 py-2 rounded-full" style={{ background: "#2563EB" }}>
+            <button type="button" onClick={openRequestForm} className="text-sm font-semibold text-white px-4 py-2 rounded-full" style={{ background: "#2563EB" }}>
               Request Your Shop
             </button>
           </div>
@@ -286,7 +295,7 @@ export default function ShopNest() {
               </button>
               <button
                 type="button"
-                onClick={() => scrollTo("contact")}
+                onClick={openRequestForm}
                 className="px-6 py-3 rounded-full font-semibold border-2 transition-colors hover:bg-slate-50"
                 style={{ borderColor: "#0F172A", color: "#0F172A" }}
               >
@@ -636,7 +645,7 @@ export default function ShopNest() {
               </ul>
               <button
                 type="button"
-                onClick={() => scrollTo("contact")}
+                onClick={openRequestForm}
                 className="w-full text-sm font-semibold py-2.5 rounded-full transition-all hover:opacity-90"
                 style={{
                   background: plan.highlight ? "#2563EB" : "#0F172A",
@@ -690,7 +699,7 @@ export default function ShopNest() {
           <div className="flex flex-wrap justify-center gap-3">
             <button
               type="button"
-              onClick={() => scrollTo("contact")}
+              onClick={openRequestForm}
               className="px-6 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity"
               style={{ background: "white", color: "#0F172A" }}
             >
@@ -698,7 +707,7 @@ export default function ShopNest() {
             </button>
             <button
               type="button"
-              onClick={() => scrollTo("contact")}
+              onClick={openRequestForm}
               className="px-6 py-3 rounded-full font-semibold border-2 border-white text-white hover:bg-white/10 transition-colors"
             >
               Contact Sales
